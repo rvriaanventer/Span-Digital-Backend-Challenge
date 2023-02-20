@@ -10,23 +10,24 @@ import java.util.Set;
 public class App {
     
     public static void main(String[] args) {
-        boolean fileNotValid = true;
         
-        while (fileNotValid) {
-            System.out.println("Please provide the file path:");
-            try (Scanner commandLineScanner = new Scanner(System.in)) {
+        try (Scanner commandLineScanner = new Scanner(System.in)) {
+            boolean fileValid = false;
+            do {
+                System.out.println("Please provide the file path:");
                 String filePath = commandLineScanner.nextLine();
-                
                 File file = new File(filePath);
+                
                 if (file.exists()) {
-                    fileNotValid = false;
+                    fileValid = true;
                     List<Set<Team>> matchList = MatchListInputFileProcessor.getMatchList(file);
                     Map<String, Integer> league = LeagueGenerator.generateLeague(matchList);
                     printSortedLeague(league);
                 } else {
                     System.out.println("File does not exist!");
                 }
-            }
+                
+            } while (!fileValid);
         }
     }
     
